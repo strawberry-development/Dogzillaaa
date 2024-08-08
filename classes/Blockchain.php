@@ -13,7 +13,7 @@ class Blockchain {
 
     private function createGenesisBlock(): Block
     {
-        return new Block(0, strtotime("now"), "Genesis Block - 'Spring'", "0");
+        return new Block(0, time(), ["Genesis Block" => "Initial Block in the Chain"], "0");
     }
 
     public function getLatestBlock(): Block
@@ -21,9 +21,10 @@ class Blockchain {
         return $this->chain[count($this->chain) - 1];
     }
 
-    public function addBlock($newBlock): void
+    public function addBlock(mixed $data): void
     {
-        $newBlock->previousHash = $this->getLatestBlock()->hash;
+        $latestBlock = $this->getLatestBlock();
+        $newBlock = new Block($latestBlock->index + 1, time(), $data, $latestBlock->hash);
         $newBlock->mineBlock($this->difficulty);
         $this->chain[] = $newBlock;
     }
@@ -43,5 +44,20 @@ class Blockchain {
             }
         }
         return true;
+    }
+
+    public function getBlockchainSize(): int
+    {
+        return count($this->chain);
+    }
+
+    public function getBlockByIndex(int $index): ?Block
+    {
+        return $this->chain[$index] ?? null;
+    }
+
+    public function serializeBlockchain(): string
+    {
+        return json_encode($this->chain, JSON_PRETTY_PRINT);
     }
 }
