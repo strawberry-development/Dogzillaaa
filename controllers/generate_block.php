@@ -10,11 +10,17 @@ if (!isset($_SESSION['blockchain'])) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $data = $_POST['data'];
-    $newBlock = new Block(count($blockchain->chain), strtotime("now"), ["data" => $data]);
-    $blockchain->addBlock($newBlock);
+    $data = isset($_POST['data']) ? htmlspecialchars($_POST['data']) : '';
 
-    $_SESSION['blockchain'] = serialize($blockchain);
+    if ($data) {
+        $blockchain->addBlock($data);
+
+        $_SESSION['blockchain'] = serialize($blockchain);
+    }
+
+    header('Location: ../index.php?message=Block added successfully');
+    exit();
 }
 
-header('Location: ../index.php');
+header('Location: ../index.php?message=Invalid request');
+exit();

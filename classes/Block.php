@@ -17,17 +17,16 @@ class Block {
         $this->hash = $this->calculateHash();
     }
 
-    public function calculateHash(): string
-    {
-        return hash('sha256', $this->index . $this->timestamp . json_encode($this->data) . $this->previousHash . $this->nonce);
+    public function calculateHash(): string {
+        return hash('sha256', $this->index . $this->timestamp . json_encode($this->data, JSON_UNESCAPED_SLASHES) . $this->previousHash . $this->nonce);
     }
 
     public function mineBlock(int $difficulty): void {
         $target = str_repeat('0', $difficulty);
-        while (substr($this->hash, 0, $difficulty) !== $target) {
+        while (strncmp($this->hash, $target, $difficulty) !== 0) {
             $this->nonce++;
             $this->hash = $this->calculateHash();
         }
-        echo "Block mined: " . $this->hash . "\n";
+        echo "Block mined: " . $this->hash . PHP_EOL;
     }
 }

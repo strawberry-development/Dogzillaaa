@@ -39,7 +39,7 @@ $message = isset($_GET['message']) ? htmlspecialchars($_GET['message']) : '';
 
 <main>
     <section id="blockchain">
-        <?php foreach ($blockchain->chain as $block): ?>
+        <?php foreach ($blockchain->getChain() as $block): ?>
             <div class="block">
                 <p><strong>Index:</strong> <?php echo $block->index; ?></p>
                 <p><strong>Timestamp:</strong> <?php echo date('Y-m-d H:i:s', $block->timestamp); ?></p>
