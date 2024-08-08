@@ -1,0 +1,1 @@
+O:10:"Blockchain":2:{s:5:"chain";a:1:{i:0;O:5:"Block":6:{s:5:"index";i:0;s:9:"timestamp";i:1723130351;s:4:"data";a:1:{s:13:"Genesis Block";s:26:"Initial Block in the Chain";}s:12:"previousHash";s:1:"0";s:4:"hash";s:64:"d45089cb9aa7e453766032163f86c5c5e6c4ed80b20c0621e559e3a3e72671f6";s:5:"nonce";i:0;}}s:10:"difficulty";i:4;}
