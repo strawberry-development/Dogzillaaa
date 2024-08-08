@@ -38,6 +38,11 @@ $message = isset($_GET['message']) ? htmlspecialchars($_GET['message']) : '';
 <?php endif; ?>
 
 <main>
+    <section class="links-section">
+        <a href="../controllers/verify_block.php">Verify Blockchain</a>
+        <a href="../controllers/reset_blockchain.php" class="reset-button">Reset Blockchain</a>
+        <a href="../controllers/archive_blockchain.php" class="archive-button">Archive Blockchain</a>
+    </section>
     <section id="blockchain">
         <?php foreach ($blockchain->getChain() as $block): ?>
             <div class="block">
@@ -47,6 +52,7 @@ $message = isset($_GET['message']) ? htmlspecialchars($_GET['message']) : '';
                 <p><strong>Previous Hash:</strong> <?php echo htmlspecialchars($block->previousHash); ?></p>
                 <p><strong>Hash:</strong> <?php echo htmlspecialchars($block->hash); ?></p>
                 <p><strong>Nonce:</strong> <?php echo htmlspecialchars($block->nonce); ?></p>
+                <p><strong>Elo Reward:</strong> <?php echo htmlspecialchars($block->eloReward); ?></p>
             </div>
         <?php endforeach; ?>
     </section>
@@ -56,12 +62,6 @@ $message = isset($_GET['message']) ? htmlspecialchars($_GET['message']) : '';
             <input type="text" name="data" placeholder="Enter data" required>
             <button type="submit">Generate Block</button>
         </form>
-    </section>
-
-    <section class="links-section">
-        <a href="../controllers/verify_block.php">Verify Blockchain</a>
-        <a href="../controllers/reset_blockchain.php" class="reset-button">Reset Blockchain</a>
-        <a href="../controllers/archive_blockchain.php" class="archive-button">Archive Blockchain</a>
     </section>
 </main>
 </body>

@@ -3,31 +3,37 @@
 require_once 'Block.php';
 
 class Blockchain {
-    private array $chain;
-    private int $difficulty;
+    public array $chain;
+    public int $difficulty;
+    public int $eloReward;
 
-    public function __construct(int $difficulty = 4) {
+    public function __construct() {
         $this->chain = [$this->createGenesisBlock()];
-        $this->difficulty = $difficulty;
+        $this->difficulty = 4;
+        $this->eloReward = 100; // Set the Elo reward amount
     }
 
-    private function createGenesisBlock(): Block {
+    private function createGenesisBlock(): Block
+    {
         return new Block(0, time(), ["Genesis Block" => "Initial Block in the Chain"], "0");
     }
 
-    public function getLatestBlock(): Block {
-        return end($this->chain);
+    public function getLatestBlock(): Block
+    {
+        return $this->chain[count($this->chain) - 1];
     }
 
-    public function addBlock(mixed $data): void {
+    public function addBlock(mixed $data): void
+    {
         $latestBlock = $this->getLatestBlock();
         $newBlock = new Block($latestBlock->index + 1, time(), $data, $latestBlock->hash);
-        $newBlock->mineBlock($this->difficulty);
+        $newBlock->mineBlock($this->difficulty, $this->eloReward); // Pass the Elo reward
         $this->chain[] = $newBlock;
     }
 
-    public function isChainValid(): bool {
-        for ($i = 1, $count = count($this->chain); $i < $count; $i++) {
+    public function isChainValid(): bool
+    {
+        for ($i = 1; $i < count($this->chain); $i++) {
             $currentBlock = $this->chain[$i];
             $previousBlock = $this->chain[$i - 1];
 
@@ -42,26 +48,24 @@ class Blockchain {
         return true;
     }
 
-    public function getBlockchainSize(): int {
+    public function getBlockchainSize(): int
+    {
         return count($this->chain);
     }
 
-    public function getBlockByIndex(int $index): ?Block {
+    public function getBlockByIndex(int $index): ?Block
+    {
         return $this->chain[$index] ?? null;
     }
 
-    public function getChain(): array {
+    // Add this method to retrieve the chain
+    public function getChain(): array
+    {
         return $this->chain;
     }
 
-    public function serializeBlockchain(): string {
-        return json_encode(array_map(fn($block) => [
-            'index' => $block->index,
-            'timestamp' => $block->timestamp,
-            'data' => $block->data,
-            'previousHash' => $block->previousHash,
-            'hash' => $block->hash,
-            'nonce' => $block->nonce
-        ], $this->chain), JSON_PRETTY_PRINT);
+    public function serializeBlockchain(): string
+    {
+        return json_encode($this->chain, JSON_PRETTY_PRINT);
     }
 }
